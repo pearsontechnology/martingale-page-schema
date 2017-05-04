@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pageSchemaToReact 1`] = `
+<div>
+  <div>
+    Hello 
+    World
+    !
+  </div>
+  <div>
+    Hello 
+    Static
+    !
+  </div>
+  <div>
+    Hello 
+    Test
+    !
+  </div>
+  <div>
+    Hello 
+    Test
+    !
+  </div>
+  <div>
+    <div>
+      Hello 
+      Bob
+      !
+    </div>
+    <div>
+      Hello 
+      Sue
+      !
+    </div>
+    <div>
+      Hello 
+      Phil
+      !
+    </div>
+    <div>
+      Hello 
+      Henry
+      !
+    </div>
+  </div>
+</div>
+`;
