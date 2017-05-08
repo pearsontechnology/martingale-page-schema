@@ -73,6 +73,11 @@ class PageSchema{
       const mapItemFuncs = from.map((item)=>this.createPropMap(item));
       return (props)=>mapItemFuncs.map(f=>f(props));
     }
+    /*
+    if(['string', 'number', 'boolean'].indexOf(type)>-1){
+      return from;
+    }
+    */
     return (props)=>from;
   }
 
@@ -103,7 +108,20 @@ class PageSchema{
       children: compChildren,
       props: rawProps
     } = src;
-    const propMap = this.createPropMap(rawProps);
+    const mappedProps = rawProps && Object.keys(rawProps).map((key)=>{
+      const value = rawProps[key];
+      return {
+        key,
+        map: this.createPropMap(value)
+      };
+    });
+    const propMap = rawProps?(props)=>{
+      return mappedProps.reduce((pl, o)=>{
+        return Object.assign(pl, {
+          [o.key]: o.map(props)
+        });
+      }, {});
+    }:()=>{};
     const Type = this.components[type] || type;
     const children = compChildren || propMap.children;
     return (props)=>{
