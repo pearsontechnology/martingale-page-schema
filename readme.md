@@ -72,25 +72,25 @@ const GreetList=({people=[]})=><div>{people.map((person, index)=><Greet key={ind
 
 // The actual schema of the page to generate
 const layout={
-  type: 'div',
+  $type: 'div',
   children: [
     {
-      type: 'Greet' // Creates "Hello World!"
+      $type: 'Greet' // Creates "Hello World!"
     },
     {
-      type: 'Greet',
+      $type: 'Greet',
       props: {
         name: 'Static' // Creates "Hello Static!"
       }
     },
     {
-      type: 'Greet',
+      $type: 'Greet',
       props: {
         name: data.name // Creates "Hello Test!"
       }
     },
     {
-      type: 'GreetList',
+      $type: 'GreetList',
       props: {
         people: data.people // Creates a list of Hello's
       }
