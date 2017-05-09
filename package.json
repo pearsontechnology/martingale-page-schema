@@ -23,7 +23,7 @@
     "react-test-renderer": "^15.5.4"
   },
   "dependencies": {
-    "martingale-utils": "file:../utils/",
+    "martingale-utils": "^0.0.1",
     "react": "^15.5.4"
   }
 }
