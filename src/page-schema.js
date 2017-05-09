@@ -16,7 +16,7 @@ class PageSchema{
     if(!from){
       return false;
     }
-    if(from.type){
+    if(from.$type){
       return this.$component.bind(this);
     }
     return this.handlers.reduce((special, key)=>{
@@ -73,12 +73,14 @@ class PageSchema{
       const mapItemFuncs = from.map((item)=>this.createPropMap(item));
       return (props)=>mapItemFuncs.map(f=>f(props));
     }
-    /*
-    if(['string', 'number', 'boolean'].indexOf(type)>-1){
-      return from;
-    }
-    */
     return (props)=>from;
+  }
+
+  $raw(src){
+    if(src.$raw){
+      return this.$raw(src.$raw);
+    }
+    return ()=>src;
   }
 
   $map(src){
@@ -104,7 +106,7 @@ class PageSchema{
       return (props)=>Type;
     }
     const {
-      type,
+      $type,
       children: compChildren,
       props: rawProps
     } = src;
@@ -122,7 +124,7 @@ class PageSchema{
         });
       }, {});
     }:()=>{};
-    const Type = this.components[type] || type;
+    const Type = this.components[$type] || $type;
     const children = compChildren || propMap.children;
     return (props)=>{
       const mapped = Object.assign({children}, props, propMap(props));

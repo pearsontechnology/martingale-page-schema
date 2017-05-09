@@ -21,29 +21,29 @@ const data = {
 };
 
 const layout={
-  type: 'div',
+  $type: 'div',
   children: [
     {
-      type: 'Greet'
+      $type: 'Greet'
     },
     {
-      type: 'Greet',
+      $type: 'Greet',
       props: {
         name: 'Static'
       }
     },
     {
-      type: 'Greet',
+      $type: 'Greet',
       props: {
         name: data.name
       }
     },
     {
-      type: 'Greet',
+      $type: 'Greet',
       props: data
     },
     {
-      type: 'GreetList',
+      $type: 'GreetList',
       props: data
     }
   ]
