@@ -5,11 +5,12 @@ import {
 } from 'martingale-utils';
 
 class PageSchema{
-  constructor(components, options = {}){
+  constructor(components, options = {params: {}}){
     this.components = components;
     this.handlers = Object.getOwnPropertyNames(PageSchema.prototype)
       .filter(x => x.charAt(0) === '$')
       .concat(...Object.getOwnPropertyNames(options.handlers || {}));
+    this.params = options.params;
   }
 
   getHandler(from){
@@ -87,14 +88,16 @@ class PageSchema{
     if(src.$map){
       return this.$map(src.$map);
     }
-    return (data)=>this.mapValues(src, data);
+    return (props)=>{
+      return this.mapValues(src, {props, params: this.params});
+    }
   }
 
   $mapper(src){
     if(src.$mapper){
       return this.$mapper(src.$mapper);
     }
-    return ()=> (data)=>this.mapValues(src, data);
+    return ()=> (props)=>this.mapValues(src, {props, params: this.params});
   }
 
   $component(src){
@@ -129,18 +132,18 @@ class PageSchema{
     return (props)=>{
       const mapped = Object.assign({children}, props, propMap(props));
       if(mapped && mapped.children){
-        return <Type {...mapped}>{this.render(mapped.children)}</Type>;
+        return <Type {...mapped}>{this.render({layout: mapped.children, props: mapped})}</Type>;
       }
       return <Type {...mapped} />;
     };
   }
 
-  render(layout, key){
+  render({layout, key}){
     if(React.isValidElement(layout)){
       return layout;
     }
     if(Array.isArray(layout)){
-      return layout.map(this.render.bind(this));
+      return layout.map((layout, key)=>this.render({layout, key}));
     }
     const handler = this.getHandler(layout);
     if(handler){
@@ -150,9 +153,9 @@ class PageSchema{
   }
 };
 
-const pageSchemaToReact = ({layout, components})=>{
-  const render = new PageSchema(components);
-  return render.render(layout);
+const pageSchemaToReact = ({layout, components, props})=>{
+  const render = new PageSchema(components, {params: props});
+  return render.render({layout});
 };
 
 export {
