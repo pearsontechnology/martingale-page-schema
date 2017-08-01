@@ -29,7 +29,6 @@ class PageSchema{
   }
 
   mapValues(src, data){
-    console.log(src, data)
     const handler = this.getHandler(src);
     if(handler !== false){
       return handler(src, data);
