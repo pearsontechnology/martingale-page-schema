@@ -29,6 +29,7 @@ class PageSchema{
   }
 
   mapValues(src, data){
+    console.log(src, data)
     const handler = this.getHandler(src);
     if(handler !== false){
       return handler(src, data);
@@ -89,7 +90,7 @@ class PageSchema{
       return this.$map(src.$map);
     }
     return (props)=>{
-      return this.mapValues(src, {props, params: this.params});
+      return this.mapValues(src, Object.assign({}, {props}, this.params));
     }
   }
 
@@ -97,7 +98,7 @@ class PageSchema{
     if(src.$mapper){
       return this.$mapper(src.$mapper);
     }
-    return ()=> (props)=>this.mapValues(src, {props, params: this.params});
+    return ()=> (props)=>this.mapValues(src, Object.assign({}, {props}, this.params));
   }
 
   $component(src){
