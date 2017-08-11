@@ -4,6 +4,23 @@ import {
   getObjectValue
 } from 'martingale-utils';
 
+let __internalKey = 0;
+const generateKey = (prefix)=>{
+  const key = __internalKey+1;
+  __internalKey=key;
+  return `ik-${prefix?prefix+'-':''}${key}`;
+};
+
+const getKey = ({key, props = {}})=>{
+  if(typeof(key)!=='undefined'){
+    return key;
+  }
+  if(typeof(props.key)!=='undefined'){
+    return props.key;
+  }
+  return generateKey('getKey');
+};
+
 class PageSchema{
   constructor(components, options = {params: {}}){
     this.components = components;
@@ -113,6 +130,7 @@ class PageSchema{
       children: compChildren,
       props: rawProps
     } = src;
+    const key = getKey(src);
     const mappedProps = rawProps && Object.keys(rawProps).map((key)=>{
       const value = rawProps[key];
       return {
@@ -120,7 +138,7 @@ class PageSchema{
         map: this.createPropMap(value)
       };
     });
-    const propMap = rawProps?(props)=>{
+    const propMap = rawProps?({key, ...props})=>{
       return mappedProps.reduce((pl, o)=>{
         return Object.assign(pl, {
           [o.key]: o.map(props)
@@ -132,18 +150,20 @@ class PageSchema{
     return (props)=>{
       const mapped = Object.assign({children}, props, propMap(props));
       if(mapped && mapped.children){
-        return <Type {...mapped}>{this.render({layout: mapped.children, props: mapped})}</Type>;
+        return <Type key={key} {...mapped}>{this.render({layout: mapped.children})}</Type>;
       }
-      return <Type {...mapped} />;
+      return <Type key={key} {...mapped} />;
     };
   }
 
-  render({layout, key}){
+  render({layout, key = generateKey('render')}){
     if(React.isValidElement(layout)){
       return layout;
     }
     if(Array.isArray(layout)){
-      return layout.map((layout, key)=>this.render({layout, key}));
+      return layout.map((layoutItem)=>{
+        return this.render({layout: layoutItem});
+      });
     }
     const handler = this.getHandler(layout);
     if(handler){
