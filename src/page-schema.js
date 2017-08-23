@@ -69,7 +69,7 @@ class PageSchema{
     return src;
   }
 
-  createPropMap(from){
+  createPropMap({from, key}){
     const type = betterType(from);
     if(type === 'undefined'){
       return ()=>{};
@@ -80,7 +80,7 @@ class PageSchema{
         return handler(from);
       }
       const objKeysFuncs = Object.keys(from).map((key)=>{
-        const f = this.createPropMap(from[key]);
+        const f = this.createPropMap({from: from[key], key});
         return (o, props)=>{
           return Object.assign({}, o, {[key]: f(props)});
         };
@@ -88,7 +88,7 @@ class PageSchema{
       return (props)=>objKeysFuncs.reduce((o, f)=>f(o, props), {});
     }
     if(type === 'array'){
-      const mapItemFuncs = from.map((item)=>this.createPropMap(item));
+      const mapItemFuncs = from.map((item, index)=>this.createPropMap({from: item, key: index}));
       return (props)=>mapItemFuncs.map(f=>f(props));
     }
     return (props)=>from;
@@ -135,7 +135,7 @@ class PageSchema{
       const value = rawProps[key];
       return {
         key,
-        map: this.createPropMap(value)
+        map: this.createPropMap({from: value})
       };
     });
     const propMap = rawProps?({key, ...props})=>{
@@ -156,7 +156,7 @@ class PageSchema{
     };
   }
 
-  render({layout, key = generateKey('render')}){
+  render({layout, key = generateKey('render'), ...rest}){
     if(React.isValidElement(layout)){
       return layout;
     }
