@@ -117,12 +117,37 @@ class PageSchema{
     return ()=> (props)=>this.mapValues(src, Object.assign({}, {props}, this.params));
   }
 
-  $component(src){
+  getPropMap(rawProps){
+    const mappedProps = rawProps && Object.keys(rawProps).map((key)=>{
+      const value = rawProps[key];
+      return {
+        key,
+        map: this.createPropMap({from: value})
+      };
+    });
+    return rawProps?({key, ...props})=>{
+      return mappedProps.reduce((pl, o)=>{
+        return Object.assign(pl, {
+          [o.key]: o.map(props)
+        });
+      }, {});
+    }:()=>{};
+  }
+
+  $component(src, srcProps, srcChildren){
     if(src.$component){
-      return this.$component(src.$component);
+      return this.$component(src.$component, src.props, src.children);
     }
     if(typeof(src)==='string'){
       const Type = this.components[src] || src;
+      if(srcProps || srcChildren){
+        return ()=>{
+          const propMap = this.getPropMap(srcProps);
+          return (props)=>{
+            return this.render({layout: {$type: src, props: propMap(props), children: srcChildren}});
+          };
+        };
+      }
       return (props)=>Type;
     }
     const {
@@ -131,20 +156,7 @@ class PageSchema{
       props: rawProps
     } = src;
     const key = getKey(src);
-    const mappedProps = rawProps && Object.keys(rawProps).map((key)=>{
-      const value = rawProps[key];
-      return {
-        key,
-        map: this.createPropMap({from: value})
-      };
-    });
-    const propMap = rawProps?({key, ...props})=>{
-      return mappedProps.reduce((pl, o)=>{
-        return Object.assign(pl, {
-          [o.key]: o.map(props)
-        });
-      }, {});
-    }:()=>{};
+    const propMap = this.getPropMap(rawProps);
     const Type = this.components[$type] || $type;
     const children = compChildren || propMap.children;
     return (props)=>{
