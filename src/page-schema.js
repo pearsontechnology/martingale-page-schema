@@ -46,27 +46,34 @@ class PageSchema{
   }
 
   mapValues(src, data){
-    const handler = this.getHandler(src);
-    if(handler !== false){
-      return handler(src, data);
-    }
+    try{
+      const handler = this.getHandler(src);
+      if(handler !== false){
+        return handler(src, data);
+      }
 
-    const type = betterType(src);
-    if(type === 'object'){
-      return Object.keys(src).reduce((o, key)=>{
-        const n = {...o, [key]: this.mapValues(src[key], data)};
-        return n;
-      }, {});
-    }
+      const type = betterType(src);
+      if(type === 'object'){
+        return Object.keys(src).reduce((o, key)=>{
+          const n = {...o, [key]: this.mapValues(src[key], data)};
+          return n;
+        }, {});
+      }
 
-    if(type === 'array'){
-      return src.map((item)=>this.mapValues(item, data));
-    }
+      if(type === 'array'){
+        return src.map((item)=>this.mapValues(item, data));
+      }
 
-    if(type === 'string'){
-      return getObjectValue(src, data);
+      if(type === 'string'){
+        return getObjectValue(src, data);
+      }
+      return src;
+    }catch(e){
+      console.error('Page Schema Error: ', e);
+      console.error('Source: ', src);
+      console.error('Data: ', data);
+      throw e;
     }
-    return src;
   }
 
   createPropMap({from, key}){
