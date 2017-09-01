@@ -21,6 +21,13 @@ const getKey = ({key, props = {}})=>{
   return generateKey('getKey');
 };
 
+/**
+* Workhorse behind layouts, uses internal functions and tricks to create valid React elements from the JSON description.
+* @param {object} components - Hash of React Components that are available for use within the layout.
+* @param {object} options
+* @param {object} options.params - Hash of properties to be passed into the root element.
+* @param {object} options.handlers - Hash of handlers to be used to create or mutate elements.
+ */
 class PageSchema{
   constructor(components, options = {params: {}}){
     this.components = components;
@@ -192,6 +199,84 @@ class PageSchema{
   }
 };
 
+/**
+ * Creates an instance of PageSchema and then uses it to generate an actual React element from the layout and components provided.
+ * @param {object} options
+ * @param {object} options.layout - The JSON layout used to define the output React element.
+ * @param {object} options.components - Hash of React Components that are available for use within the layout.
+ * @param {object} options.props - Hash of properties to be passed into the root element.
+ *
+ * @example
+ * import React, {Component} from 'react';
+ * import ReactDOM from 'react-dom';
+ * import PropTypes from 'prop-types';
+ * import {pageSchemaToReact} from 'martingale-page-schema';
+ *
+ * // Some static properties to send
+ * const data = {
+ *   name: 'Test',
+ *   people: [
+ *     {name: 'Bob'},
+ *     {name: 'Sue'},
+ *     {name: 'Phil'},
+ *     {name: 'Henry'},
+ *   ]
+ * };
+ *
+ * // Some helper objects, just cuz
+ * const Greet=({name='World'})=>(<div>Hello {name}!</div>);
+ * Greet.propTypes={
+ *   name: PropTypes.string
+ * };
+ * const GreetList=({people=[]})=><div>{people.map((person, index)=><Greet key={index} {...person} />)}</div>;
+ *
+ * // The actual schema of the page to generate
+ * const layout={
+ *   $type: 'div',
+ *   children: [
+ *     {
+ *       $type: 'Greet' // Creates "Hello World!"
+ *     },
+ *     {
+ *       $type: 'Greet',
+ *       props: {
+ *         name: 'Static' // Creates "Hello Static!"
+ *       }
+ *     },
+ *     {
+ *       $type: 'Greet',
+ *       props: {
+ *         name: data.name // Creates "Hello Test!"
+ *       }
+ *     },
+ *     {
+ *       $type: 'GreetList',
+ *       props: {
+ *         people: data.people // Creates a list of Hello's
+ *       }
+ *     }
+ *   ]
+ * };
+ *
+ * // Hash of available components
+ * const components={
+ *   Greet,
+ *   GreetList
+ * };
+ *
+ * class App extends Component {
+ *   render() {
+ *     return (
+ *       {pageSchemaToReact({layout, compoments})}
+ *     );
+ *   }
+ * };
+ *
+ * ReactDOM.render(
+ *   <App />,
+ *   document.getElementById('root')
+ * );
+*/
 const pageSchemaToReact = ({layout, components, props})=>{
   const render = new PageSchema(components, {params: props});
   return render.render({layout});
