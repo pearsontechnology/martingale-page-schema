@@ -148,6 +148,22 @@ class PageSchema{
     }:()=>{};
   }
 
+  $function(src, srcProps, srcChildren){
+    if(src.$function){
+      return this.$function(src.$function, src.props, src.children);
+    }
+    if(typeof(src)==='string'){
+      return ()=> {
+        return new Function('', src);
+      };
+    }
+    if(typeof(src)==='object'){
+      return ()=>{
+        return new Function(src.args || '', src.source);
+      }
+    }
+  }
+
   $component(src, srcProps, srcChildren){
     if(src.$component){
       return this.$component(src.$component, src.props, src.children);
