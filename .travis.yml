@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- '8'
+- '10'
+deploy:
+  provider: npm
+  email: jeremy.darling@gmail.com
+  api_key:
+    secure: ZISKPo6SzZZlbWYjkxWeyDEJTgI3rV9UyGOoxPhcpvLYkIeWEyrCoW861BkRu0Svk5Yat/hrt7YcxlYrUuTQrqCsQK6l/W74xtI1i6oXdxRh/8ebsYeHPlWhu5haaa/azobiaqC213CzJoabpOK8WT8IsrWMVinIWkZDGtQLTc08YAKs6HxKUM0he8kjku7bAoM/CROk0Fgo+sxxpSX9WbBLlM7hfM0PbNDOPynUhHPdxeiAeRKFvZSOzRvV1+KyElLPKX3BYZp+8NCb+AqmOSAZodpLQefWx805FkdKYazEA7ySk4JeChmRPmmzJibx2BZJsEFw3uOaH55tyWJJV4Gam1Qhl9ChnXETcQJ6JObS4Fyg2NEZwSRe3Cns/IJUQhTpG5E+BVWfEHxAl6CxOjmYJMk09SrbJdbwOC2uKFE2f8UWkD5eQftGEn6iheCUpVeInYvUZ6nMYzDe151xeOj5l9/9hR1kZMaTdIQTIVYGH6Vi6/qp91OraPRcnzQkdO4Q9A/uTkDVos2oENb5YLhh+4fhSkqyYpFvv8bfk377x91yloF3NgYEUXMzaZHrry0y2YOntHM4OH16+L8tdcQaw0E6HxYDg7STliyK99DQwswFytnwZshyYWXIM896fXtwmdczcrQF0qHEOFb6uapkGE6jX6AEmBAHb1fKUjE=
+  on:
+    tags: true
+    repo: pearsontechnology/martingale-page-schema
