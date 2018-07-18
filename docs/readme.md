@@ -27,7 +27,7 @@ Creates an instance of PageSchema and then uses it to generate an actual React e
     -   `options.components` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of React Components that are available for use within the layout.
     -   `options.props` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of properties to be passed into the root element.
 
-**Examples**
+**Example**
 
 ```javascript
 import React, {Component} from 'react';
