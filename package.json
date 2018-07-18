@@ -1,6 +1,6 @@
 {
   "name": "@martingale/page-schema",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Utilizes a simple JSON object to create React pages for Martingale",
   "main": "index.js",
   "repository": "https://github.com/pearsontechnology/martingale-page-schema.git",
