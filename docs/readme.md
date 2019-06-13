@@ -2,8 +2,8 @@
 
 ### Table of Contents
 
--   [PageSchema](#pageschema)
--   [pageSchemaToReact](#pageschematoreact)
+-   [PageSchema][1]
+-   [pageSchemaToReact][2]
 
 ## PageSchema
 
@@ -11,10 +11,10 @@ Workhorse behind layouts, uses internal functions and tricks to create valid Rea
 
 **Parameters**
 
--   `components` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of React Components that are available for use within the layout.
--   `options` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{params:{}}`)
-    -   `options.params` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of properties to be passed into the root element.
-    -   `options.handlers` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of handlers to be used to create or mutate elements.
+-   `components` **[object][3]** Hash of React Components that are available for use within the layout.
+-   `options` **[object][3]**  (optional, default `{params:{}}`)
+    -   `options.params` **[object][3]** Hash of properties to be passed into the root element.
+    -   `options.handlers` **[object][3]** Hash of handlers to be used to create or mutate elements.
 
 ## pageSchemaToReact
 
@@ -22,12 +22,12 @@ Creates an instance of PageSchema and then uses it to generate an actual React e
 
 **Parameters**
 
--   `options` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-    -   `options.layout` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** The JSON layout used to define the output React element.
-    -   `options.components` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of React Components that are available for use within the layout.
-    -   `options.props` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Hash of properties to be passed into the root element.
+-   `options` **[object][3]** 
+    -   `options.layout` **[object][3]** The JSON layout used to define the output React element.
+    -   `options.components` **[object][3]** Hash of React Components that are available for use within the layout.
+    -   `options.props` **[object][3]** Hash of properties to be passed into the root element.
 
-**Example**
+**Examples**
 
 ```javascript
 import React, {Component} from 'react';
@@ -100,3 +100,9 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+[1]: #pageschema
+
+[2]: #pageschematoreact
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
